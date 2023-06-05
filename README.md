@@ -29,7 +29,7 @@ export default ({ env }) => ({
 });
 ```
 
-`populateDataURI` will add a `thumbHashURI` field to the image object. This is useful when you don't to generate the thumbhash on the client side at the cost of increased payload size and data usage. Since this is optional, the field is nullable on the image payloud.
+`populateDataURI` will add a `thumbHashURI` field to the image object. This is useful when you don't to generate the thumbhash on the client side at the cost of increased payload size and data usage. Since this is optional, the field is nullable on the image payload.
 
 `regenerateOnUpdate` will regenerate the thumbhash when the image is updated. This is useful when you want to update the thumbhash when the image is edited.
 
