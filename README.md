@@ -18,16 +18,15 @@ npm install strapi-thumbhash
 Open/create file `config/plugins.js`. Enable this plugin by adding:
 
 ```js
-module.exports = {
-    ...
-    'strapi-thumbhash': {
-      enabled: true,
-      config: {
-        regenerateOnUpdate: true,
-        populateDataURI: false
-      }
-    },
-  }
+export default ({ env }) => ({
+  'strapi-thumbhash': {
+    enabled: true,
+    config: {
+      regenerateOnUpdate: true, // default
+      populateDataURI: false    // default
+    }
+  },
+});
 ```
 
 `populateDataURI` will add a `thumbHashURI` field to the image object. This is useful when you don't to generate the thumbhash on the client side at the cost of increased payload size and data usage. Since this is optional, the field is nullable on the image payloud.

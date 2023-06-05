@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    default: ({ env }) => ({ regenerateOnUpdate: false, populateDataURIs: false }),
+    default: ({ env }) => ({ regenerateOnUpdate: true, populateDataURIs: false }),
     validator: (config) => {
         if (typeof config.regenerateOnUpdate !== 'boolean') {
             throw new Error('regenerateOnUpdate has to be a boolean');

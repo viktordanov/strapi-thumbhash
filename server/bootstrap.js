@@ -7,24 +7,30 @@ module.exports = ({ strapi }) => {
 
     const regenerateOnUpdate = strapi.plugin('strapi-thumbhash').config('regenerateOnUpdate') === true;
     const populateDataURIs = strapi.plugin('strapi-thumbhash').config('populateDataURIs') === true;
+    const isUpdate = eventType === 'beforeUpdate';
+    const isImage = data.mime && data.mime.startsWith('image/');
 
-    if (data.mime && data.mime.startsWith('image/')) {
+    if (!isImage || (isUpdate && !regenerateOnUpdate)) {
+      return;
+    }
+
+    if (!isUpdate) {
       const { thumbHash, dataURI } = await strapi.plugin('strapi-thumbhash').service('thumbhash').generateThumbhash(data.url, populateDataURIs);
       data.thumbHash = thumbHash;
       data.thumbHashURI = dataURI;
+      return;
     }
 
-    if (eventType === 'beforeUpdate' && regenerateOnUpdate) {
-      const fullData = await strapi.db.query('plugin::upload.file').findOne({
-        select: ['url', 'thumbHash', 'name', 'mime'],
-        where
-      })
+    // Is update and regenerateOnUpdate is true
+    const fullData = await strapi.db.query('plugin::upload.file').findOne({
+      select: ['url', 'thumbHash', 'name', 'mime'],
+      where
+    })
 
-      if ((fullData.mime && fullData.mime.startsWith('image/')) && !fullData.thumbHash) {
-        const { thumbHash, dataURI } = await strapi.plugin('strapi-thumbhash').service('thumbhash').generateThumbhash(data.url, populateDataURIs);
-        data.thumbHash = thumbHash;
-        data.thumbHashURI = dataURI;
-      }
+    if ((fullData.mime && fullData.mime.startsWith('image/')) && !fullData.thumbHash) {
+      const { thumbHash, dataURI } = await strapi.plugin('strapi-thumbhash').service('thumbhash').generateThumbhash(data.url, populateDataURIs);
+      data.thumbHash = thumbHash;
+      data.thumbHashURI = dataURI;
     }
   };
 
