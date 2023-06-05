@@ -20,7 +20,7 @@ module.exports = ({ strapi }) => ({
 const binaryToBase64 = binary => btoa(String.fromCharCode(...binary))
 const base64ToBinary = base64 => new Uint8Array(atob(base64).split('').map(x => x.charCodeAt(0)))
 
-async function calculateThumbhash(url, dataURI) {
+async function calculateThumbhash(url, populateDataURIs) {
   const { rgbaToThumbHash, thumbHashToDataURL } = await import('thumbhash');
   const { Image } = await import('image-js');
   const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
@@ -39,6 +39,6 @@ async function calculateThumbhash(url, dataURI) {
   const { width, height, data } = image.rgba8();
 
   const thumbhash = rgbaToThumbHash(width, height, data);
-  const dataURL = dataURI ? thumbHashToDataURL(thumbhash) : void 0;
-  return { thumbHash: binaryToBase64(thumbhash), dataURL };
+  const dataURI = populateDataURIs ? thumbHashToDataURL(thumbhash) : void 0;
+  return { thumbHash: binaryToBase64(thumbhash), dataURI };
 }
