@@ -23,7 +23,7 @@ module.exports = {
     'strapi-thumbhash': {
       enabled: true,
       config: {
-        regenerateOnUpdate: true
+        regenerateOnUpdate: true,
         populateDataURI: false
       }
     },
