@@ -9,6 +9,7 @@
     "displayName": "Strapi thumbhash"
   },
   "dependencies": {
+    "canvas": "^2.11.2",
     "image-js": "^0.35.3",
     "node-fetch": "^3.3.1",
     "thumbhash": "^0.1.1"
