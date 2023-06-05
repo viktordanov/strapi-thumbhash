@@ -5,11 +5,10 @@ module.exports = ({ strapi }) => {
   const generateThumbhash = async (event, eventType) => {
     const { data, where } = event.params;
 
-
     const regenerateOnUpdate = strapi.plugin('strapi-thumbhash').config('regenerateOnUpdate') === true;
     const populateDataURIs = strapi.plugin('strapi-thumbhash').config('populateDataURIs') === true;
 
-    if ((data.mime && data.mime.startsWith('image/'))) {
+    if (data.mime && data.mime.startsWith('image/')) {
       const { thumbHash, dataURI } = await strapi.plugin('strapi-thumbhash').service('thumbhash').generateThumbhash(data.url, populateDataURIs);
       data.thumbHash = thumbHash;
       data.thumbHashURI = dataURI;
