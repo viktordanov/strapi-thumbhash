@@ -27,6 +27,10 @@ async function calculateThumbhash(url, populateDataURIs) {
     Buffer.from(await res.arrayBuffer())
   );
 
+
+  let thumbhash = "";
+  let dataURI = "";
+
   try {
     let image = await Image.load(buffer);
     const { width: w, height: h } = image;
@@ -38,13 +42,11 @@ async function calculateThumbhash(url, populateDataURIs) {
     }
     const { width, height, data } = image.rgba8();
 
-    const thumbhash = rgbaToThumbHash(width, height, data);
-    const dataURI = populateDataURIs ? thumbHashToDataURL(thumbhash) : void 0;
-    return { thumbHash: binaryToBase64(thumbhash), dataURI };
-  } finally {
-    return {
-      thumbHash: "",
-      dataURI: "",
-    }
+     thumbhash = rgbaToThumbHash(width, height, data);
+     dataURI = populateDataURIs ? thumbHashToDataURL(thumbhash) : void 0;
   }
+  catch (_) {
+  }
+
+  return { thumbHash: thumbhash ? binaryToBase64(thumbhash): "", dataURI };
 }
